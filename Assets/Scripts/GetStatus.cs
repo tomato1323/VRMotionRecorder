@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System;
+using System.Linq;
 using UnityEngine.XR;
 using Valve.VR;
 
@@ -11,8 +12,23 @@ https://kartolitan.com/unitydevinf/
 Unity��HMD�Ƃ��R���g���[���Ƃ��̍��W���擾����
 https://soft-rime.com/post-4238/
 �yUnityJsonUtility�z�i�N���X��z��ɂ����ꍇ�j�I�u�W�F�N�g�̃f�[�^��ۑ�������@
+https://jmpelletier.com/ja/unity%E3%81%A7oculus%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%AE%E3%82%BB%E3%83%B3%E3%82%B5%E3%83%BC%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B/
+Unity controller getStatus
 */
 
+public class RecDateWrapper
+{
+    public RecDate[] RecDates;
+}
+public class RecDate
+{
+    //Time stamp
+    public List<float> time = new List<float>();
+    //Position
+    public List<Vector3> position = new List<Vector3>();
+    //Rotation
+    public List<Quaternion> rotation = new List<Quaternion>();
+}
 
 public class GetStatus : MonoBehaviour
 {
@@ -20,6 +36,8 @@ public class GetStatus : MonoBehaviour
 
     //public RecordDate RCDate;
     //iremono ----- DEPRECATED -----
+    public XRNode[] TargetNode;
+    public RecDateWrapper RCWl;
 
     public TitleScreen TS;
     //UI
@@ -46,24 +64,7 @@ public class GetStatus : MonoBehaviour
 
     //RD transfer
     [SerializeField]
-    public class RecDateWrapper
-    {
-        public RecDate[] RecDates;
-    }
-    public class RecDate
-    {
-        //Time stamp
-        public List<float> time = new List<float>();
-        //Position
-        public List<Vector3> position = new List<Vector3>();
-        //Rotation
-        public List<Quaternion> rotation = new List<Quaternion>();
-    }
-
-    [SerializeField]
-    public XRNode[] TargetNode;
-
-    public RecDateWrapper RCWl;
+    
 
     public void RecordSystem()
     {
@@ -75,6 +76,7 @@ public class GetStatus : MonoBehaviour
             //---------Change TarNod
             foreach (XRNode n in TargetNode)
             {
+                Debug.Log("CR");
                 //Checking TargetNode
                 if (s.nodeType == n)
                 {
@@ -173,7 +175,7 @@ public class GetStatus : MonoBehaviour
     }
 
     public void Export2CSV(){
-        exporter.LogSave();
+        exporter.LogSave(RCWl);
     }
 
     public float TimerSec(){
@@ -192,7 +194,13 @@ public class GetStatus : MonoBehaviour
         //Initialize
         TargetSecond = 5.0f;
         Debug.Log(DeviceStat);
-        RCWl.RecDates = new RecDate[TargetNode.Length];
+        RCWl = new RecDateWrapper();
+        //RCWl.RecDates = new RecDate[TargetNode.Length];
+        RCWl.RecDates = new RecDate[TargetNode.Length].Select(x => {return new RecDate();}).ToArray();
+
+        Debug.Log(RCWl.RecDates[0]);
+        Debug.Log(RCWl.RecDates[0].time);
+        Debug.Log(RCWl.RecDates[0].position);
     }
 
     void Update()

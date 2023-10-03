@@ -3,13 +3,13 @@ using System.IO;
 
 public class CSVexport : MonoBehaviour
 {
-    [SerializeField]
-    GetStatus RD;
-    public void LogSave()
+    public void LogSave(RecDateWrapper RD)
     {
         StreamWriter sw;
         FileInfo fi;
         string filename = "Output_" + System.DateTime.Now.ToString("yyyyMMddHHmmss");
+        Debug.Log("RD: " + RD);
+        Debug.Log(RD.RecDates[0].time[0]);
 
         #if UNITY_EDITOR
         fi = new FileInfo(Application.dataPath + "/" + filename + ".csv");
@@ -49,49 +49,49 @@ public class CSVexport : MonoBehaviour
                     */
                     );
         
-        for (int i = 0; i < RD.RCWl.RecDates[0].position.Count; i++)
+        for (int i = 0; i < RD.RecDates[0].position.Count; i++)
         {
                 sw.WriteLine(
-                    RD.RCWl.RecDates[0].time[i].ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].position[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].position[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].position[i].z.ToString("f5") + "," +
+                    RD.RecDates[0].time[i].ToString("f5") + "," +
+                    RD.RecDates[0].position[i].x.ToString("f5") + "," +
+                    RD.RecDates[0].position[i].y.ToString("f5") + "," +
+                    RD.RecDates[0].position[i].z.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[0].rotation[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].rotation[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].rotation[i].z.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].rotation[i].w.ToString("f5") + "," +
+                    RD.RecDates[0].rotation[i].x.ToString("f5") + "," +
+                    RD.RecDates[0].rotation[i].y.ToString("f5") + "," +
+                    RD.RecDates[0].rotation[i].z.ToString("f5") + "," +
+                    RD.RecDates[0].rotation[i].w.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[1].position[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].position[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].position[i].z.ToString("f5") + "," +
+                    RD.RecDates[1].position[i].x.ToString("f5") + "," +
+                    RD.RecDates[1].position[i].y.ToString("f5") + "," +
+                    RD.RecDates[1].position[i].z.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[1].rotation[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].rotation[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].rotation[i].z.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].rotation[i].w.ToString("f5") + "," +
+                    RD.RecDates[1].rotation[i].x.ToString("f5") + "," +
+                    RD.RecDates[1].rotation[i].y.ToString("f5") + "," +
+                    RD.RecDates[1].rotation[i].z.ToString("f5") + "," +
+                    RD.RecDates[1].rotation[i].w.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[2].position[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].position[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].position[i].z.ToString("f5") + "," +
+                    RD.RecDates[2].position[i].x.ToString("f5") + "," +
+                    RD.RecDates[2].position[i].y.ToString("f5") + "," +
+                    RD.RecDates[2].position[i].z.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[2].rotation[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].rotation[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].rotation[i].z.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].rotation[i].w.ToString("f5")
+                    RD.RecDates[2].rotation[i].x.ToString("f5") + "," +
+                    RD.RecDates[2].rotation[i].y.ToString("f5") + "," +
+                    RD.RecDates[2].rotation[i].z.ToString("f5") + "," +
+                    RD.RecDates[2].rotation[i].w.ToString("f5")
 
                     /*
-                    RD.RCWl.RecDates[0].acceleration[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].acceleration[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[0].acceleration[i].z.ToString("f5") + "," +
+                    RD.RecDates[0].acceleration[i].x.ToString("f5") + "," +
+                    RD.RecDates[0].acceleration[i].y.ToString("f5") + "," +
+                    RD.RecDates[0].acceleration[i].z.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[1].acceleration[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].acceleration[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[1].acceleration[i].z.ToString("f5") + "," +
+                    RD.RecDates[1].acceleration[i].x.ToString("f5") + "," +
+                    RD.RecDates[1].acceleration[i].y.ToString("f5") + "," +
+                    RD.RecDates[1].acceleration[i].z.ToString("f5") + "," +
 
-                    RD.RCWl.RecDates[2].acceleration[i].x.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].acceleration[i].y.ToString("f5") + "," +
-                    RD.RCWl.RecDates[2].acceleration[i].z.ToString("f5")
+                    RD.RecDates[2].acceleration[i].x.ToString("f5") + "," +
+                    RD.RecDates[2].acceleration[i].y.ToString("f5") + "," +
+                    RD.RecDates[2].acceleration[i].z.ToString("f5")
                     */
                 );
         }
@@ -99,9 +99,5 @@ public class CSVexport : MonoBehaviour
         sw.Flush();
         sw.Close();
         Debug.Log("Write Done");
-    }
-
-    private void Awake() {
-        RD = GameObject.Find("System").GetComponent<GetStatus>();
     }
 }
