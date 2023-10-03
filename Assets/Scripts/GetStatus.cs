@@ -203,7 +203,7 @@ public class GetStatus : MonoBehaviour
         Debug.Log(RCWl.RecDates[0].position);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Timer();
         if (isRecord){
