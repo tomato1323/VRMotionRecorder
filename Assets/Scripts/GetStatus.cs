@@ -68,6 +68,7 @@ public class GetStatus : MonoBehaviour
 
     public void RecordSystem()
     {
+        //call when fixed update
         InputTracking.GetNodeStates(DeviceStat);
         i = 0;
         foreach (XRNodeState s in DeviceStat)
@@ -113,6 +114,7 @@ public class GetStatus : MonoBehaviour
 
     public void RecordInitializeSystem()
     {
+        //call when start record
         InputTracking.GetNodeStates(DeviceStat);
         i = 0;
         foreach (XRNodeState s in DeviceStat)
@@ -133,6 +135,7 @@ public class GetStatus : MonoBehaviour
 
     void Timer()
     {
+        //call when Time_Start called
         //3Count+TargetCount
         if(Timer_Sequence == 1)
         {
@@ -157,7 +160,7 @@ public class GetStatus : MonoBehaviour
                 TS.SequencePlus();
                 Second = 0.0f;
                 Timer_Sequence = 0;
-                Export2CSV();
+                //Export2CSV();
 
                 //Debug.Log("RD:" + RCDate.RCWl.RecDates.Length);
                 //Debug.Log("RDP:" + RCDate.RCWl.RecDates[0].position.Count);
@@ -167,6 +170,7 @@ public class GetStatus : MonoBehaviour
     }
     public void Timer_Start()
     {
+        //call from TS
         if(Timer_Sequence == 0)
         {
             Timer_Sequence++;
@@ -174,22 +178,20 @@ public class GetStatus : MonoBehaviour
         }
     }
 
+    public void TargetSecondSet(float a){
+        //call from TS
+        TargetSecond = TargetSecond + a;
+        TS.TargetSecSet(TargetSecond);
+    }
+
     public void Export2CSV(){
         exporter.LogSave(RCWl);
     }
 
-    public float TimerSec(){
-        return Second;
-    }
-
-    private void Awake() {
-        //RCDate = GameObject.Find("System").GetComponent<RecordDate>();
-        TS = GameObject.Find("TitleScreen-v2").GetComponent<TitleScreen>();
-        exporter = GameObject.Find("System").GetComponent<CSVexport>();
-    }
-
     void Start()
     {
+        TS = GameObject.Find("TitleScreen-v2").GetComponent<TitleScreen>();
+        exporter = GameObject.Find("System").GetComponent<CSVexport>();
         isRecord = false;
         //Initialize
         TargetSecond = 5.0f;

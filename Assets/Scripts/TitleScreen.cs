@@ -11,9 +11,9 @@ public class TitleScreen : MonoBehaviour
     public int PanelSequence = 0;
     public GameObject TitlePanel;
     public GameObject PreRecordPanel;
-    public GameObject PreMovePanel;
-    public GameObject TimePanel;
-
+    public GameObject RecordPanel;
+    public GameObject SavePanel;
+    
     public void SequencePlus(){
         //Destroy (this.gameObject);
         switch(PanelSequence){
@@ -21,38 +21,47 @@ public class TitleScreen : MonoBehaviour
             case 0:
                 TitlePanel.gameObject.SetActive(false);
                 PreRecordPanel.gameObject.SetActive(true);
+                //Title to PreRec
                 Debug.Log("TS-S0push");
                 PanelSequence++;
                 break;
             //1:PreRecording
             case 1:
                 PreRecordPanel.gameObject.SetActive(false);
-                PreMovePanel.gameObject.SetActive(true);
-                Debug.Log("TS-S1push");
-                PanelSequence++;
-                break;
-            //2:PreMove
-            case 2:
-                PreMovePanel.gameObject.SetActive(false);
-                TimePanel.gameObject.SetActive(true);
-                Debug.Log("TS-S2push");
+                RecordPanel.gameObject.SetActive(true);
+                //PreRec to Rec
+                Debug.Log("TS-S1RecStart");
                 GS.Timer_Start();
                 PanelSequence++;
                 break;
-            //3:Invisible
+            //2:Record
+            case 2:
+                RecordPanel.gameObject.SetActive(false);
+                SavePanel.gameObject.SetActive(true);
+                //Rec to Save
+                Debug.Log("TS-S2done");
+                PanelSequence++;
+                break;
+            //3:Save
             case 3:
-                TimePanel.gameObject.SetActive(false);
+                SavePanel.gameObject.SetActive(false);
                 PreRecordPanel.gameObject.SetActive(true);
-                Debug.Log("TS-S3Done");
-                PanelSequence = 0;
+                //Save to PreRec
+                Debug.Log("TS-S3MaybeSaved");
+                PanelSequence = 1;
                 break;
         }
     }
 
-    public void TimerUIset(float t){
-        TimePanel.transform.Find("Text").gameObject.GetComponent<TextMeshProUGUI>().SetText("{0:0}", t);
+    public void TargetSecSet(float t){
+        PreRecordPanel.transform.Find("SetText").gameObject.GetComponent<TextMeshProUGUI>().SetText("{0:0}", t);
     }
-     private void Awake() {
+
+    public void TimerUIset(float t){
+        RecordPanel.transform.Find("Text").gameObject.GetComponent<TextMeshProUGUI>().SetText("{0:0}", t);
+    }
+    void Start(){
         GS = GameObject.Find("System").GetComponent<GetStatus>();
-     }
+        GS.TargetSecondSet(0.0f);
+    }
 }

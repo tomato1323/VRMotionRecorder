@@ -305,7 +305,7 @@ public class EasyOpenVROverlayForUnity : MonoBehaviour
         error = false;
 
         //フレームレートを90fpsにする。(しないと無限に早くなることがある)
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 60;
         Debug.Log(Tag + "Set Frame Rate 90");
 
         //OpenVRの初期化
