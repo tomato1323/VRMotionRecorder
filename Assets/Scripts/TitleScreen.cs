@@ -9,6 +9,8 @@ public class TitleScreen : MonoBehaviour
     public GetStatus GS;
     //SequencePlus
     public int PanelSequence = 0;
+    public GameObject cursorL;
+    public GameObject cursorR;
     public GameObject TitlePanel;
     public GameObject PreRecordPanel;
     public GameObject RecordPanel;
@@ -29,6 +31,9 @@ public class TitleScreen : MonoBehaviour
             case 1:
                 PreRecordPanel.gameObject.SetActive(false);
                 RecordPanel.gameObject.SetActive(true);
+
+                cursorL.gameObject.SetActive(false);
+                cursorR.gameObject.SetActive(false);
                 //PreRec to Rec
                 Debug.Log("TS-S1RecStart");
                 GS.Timer_Start();
@@ -38,6 +43,9 @@ public class TitleScreen : MonoBehaviour
             case 2:
                 RecordPanel.gameObject.SetActive(false);
                 SavePanel.gameObject.SetActive(true);
+
+                cursorL.gameObject.SetActive(true);
+                cursorR.gameObject.SetActive(true);
                 //Rec to Save
                 Debug.Log("TS-S2done");
                 PanelSequence++;
