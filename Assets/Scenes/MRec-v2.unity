@@ -1716,8 +1716,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GS: {fileID: 1645428621}
   PanelSequence: 0
-  cursorL: {fileID: 2275097542039867647}
-  cursorR: {fileID: 2275097543281860393}
   TitlePanel: {fileID: 8362214038038848278}
   PreRecordPanel: {fileID: 2275097542049293279}
   RecordPanel: {fileID: 2275097542539191163}
