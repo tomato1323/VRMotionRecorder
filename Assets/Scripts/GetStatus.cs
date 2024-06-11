@@ -7,8 +7,6 @@ using System.Linq;
 using UnityEngine.XR;
 using Valve.VR;
 
-using EasyLazyLibrary;
-
 /*
 https://kartolitan.com/unitydevinf/
 Unity��HMD�Ƃ��R���g���[���Ƃ��̍��W���擾����
@@ -37,9 +35,6 @@ public class GetStatus : MonoBehaviour
     List<XRNodeState> DeviceStat = new List<XRNodeState>();
 
     //public RecordDate RCDate;
-    EasyOpenVRUtil eou = new EasyOpenVRUtil();
-    private EasyOpenVRUtil.Transform res = new EasyOpenVRUtil.Transform();
-
     //iremono ----- DEPRECATED -----
     public XRNode[] TargetNode;
     public RecDateWrapper RCWl;
@@ -74,61 +69,47 @@ public class GetStatus : MonoBehaviour
     public void RecordSystem()
     {
         //call when fixed update
+        InputTracking.GetNodeStates(DeviceStat);
+        i = 0;
+        foreach (XRNodeState s in DeviceStat)
+        {
+            //Searching DeviceStatList
+            //---------Change TarNod
+            foreach (XRNode n in TargetNode)
+            {
+                Debug.Log("CR");
+                //Checking TargetNode
+                if (s.nodeType == n)
+                {
+                    RCWl.RecDates[i].time.Add(Second);
+                    s.TryGetPosition(out v3);               //Position
+                    RCWl.RecDates[i].position.Add(v3);
+                    s.TryGetRotation(out q3);               //Rotation
+                    RCWl.RecDates[i].rotation.Add(q3);
 
-        // 0: Head 1: Left 2: Right
-        RCWl.RecDates[0].time.Add(Second);
-        res = eou.GetHMDTransform();
-        RCWl.RecDates[0].position.Add(res.position);
-        RCWl.RecDates[0].rotation.Add(res.rotation);
-        res = eou.GetLeftControllerTransform();
-        RCWl.RecDates[1].position.Add(res.position);
-        RCWl.RecDates[1].rotation.Add(res.rotation);
-        res = eou.GetRightControllerTransform();
-        RCWl.RecDates[2].position.Add(res.position);
-        RCWl.RecDates[2].rotation.Add(res.rotation);
+                    //https://forum.unity.com/threads/how-to-get-acceleration-from-motion-controller.661297/
+                    //TryGerAcc function is not working X(
+                    /*
+                    s.TryGetAcceleration(out v3);           //Acceleration
+                    Debug.Log(v3);
+                    RCDate.RCWl.RecDates[i].acceleration.Add(v3);
+                    */
+                    /*
+                    s.TryGetVelocity(out v3);               //Velocity
+                    RCDate.RCWl.RecDates[i].velocity.Add(v3);
+                    s.TryGetAngularAcceleration(out v3);    //AG-Acceleration
+                    RCDate.RCWl.RecDates[i].AGacceleration.Add(v3);
+                    s.TryGetAngularVelocity(out v3);        //AG-Velocity
+                    RCDate.RCWl.RecDates[i].AGvelocity.Add(v3);
+                    */
 
-        // Old ver
-        // InputTracking.GetNodeStates(DeviceStat);
-        // i = 0;
-        // foreach (XRNodeState s in DeviceStat)
-        // {
-        //     //Searching DeviceStatList
-        //     //---------Change TarNod
-        //     foreach (XRNode n in TargetNode)
-        //     {
-        //         Debug.Log("CR");
-        //         //Checking TargetNode
-        //         if (s.nodeType == n)
-        //         {
-        //             RCWl.RecDates[i].time.Add(Second);
-        //             s.TryGetPosition(out v3);               //Position
-        //             RCWl.RecDates[i].position.Add(v3);
-        //             s.TryGetRotation(out q3);               //Rotation
-        //             RCWl.RecDates[i].rotation.Add(q3);
-
-        //             //https://forum.unity.com/threads/how-to-get-acceleration-from-motion-controller.661297/
-        //             //TryGerAcc function is not working X(
-        //             /*
-        //             s.TryGetAcceleration(out v3);           //Acceleration
-        //             Debug.Log(v3);
-        //             RCDate.RCWl.RecDates[i].acceleration.Add(v3);
-        //             */
-        //             /*
-        //             s.TryGetVelocity(out v3);               //Velocity
-        //             RCDate.RCWl.RecDates[i].velocity.Add(v3);
-        //             s.TryGetAngularAcceleration(out v3);    //AG-Acceleration
-        //             RCDate.RCWl.RecDates[i].AGacceleration.Add(v3);
-        //             s.TryGetAngularVelocity(out v3);        //AG-Velocity
-        //             RCDate.RCWl.RecDates[i].AGvelocity.Add(v3);
-        //             */
-
-        //             ///*
-        //             i++;
-        //             break;
-        //         }
-        //     }
-        // }
-        // Debug.Log("RCW0" + RCWl.RecDates[0]);
+                    ///*
+                    i++;
+                    break;
+                }
+            }
+        }
+        //Debug.Log("RCW0" + RCW.RecDates[0]);
     }
 
     public void RecordInitializeSystem()
@@ -158,7 +139,6 @@ public class GetStatus : MonoBehaviour
         //3Count+TargetCount
         if(Timer_Sequence == 1)
         {
-            // Count 3
             Second += Time.deltaTime;
             TS.TimerUIset(3 - Second);
             if(Second >= 3.0f)
@@ -170,7 +150,6 @@ public class GetStatus : MonoBehaviour
         }
         if(Timer_Sequence == 2)
         {
-            // Count n for record
             Second += Time.deltaTime;
             TS.TimerUIset(TargetSecond - Second);
             if(Second >= TargetSecond)
